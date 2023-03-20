@@ -9,7 +9,6 @@ export const getData = async (lat, lon, start, endtime) => {
     const response = await fetch(
       `${URL}lat=${lat}&lon=${lon}&start=${start}&end=${endtime}&appid=${appID}`
     );
-    //add a method to pass token
 
     const data = await response.json();
 

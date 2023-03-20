@@ -28,23 +28,38 @@ function App() {
     event.preventDefault();
 
     //GET API DATA
-    const pollutionData = await getData(lat, lon, start, endtime);
-    setpm2_5(`${pollutionData[0].components.pm2_5}`);
-    setAqi(`${pollutionData[0].main.aqi}`);
-    console.log('state of pm', pm2_5);
-    console.log('state of aqi', aqi);
+
+    const dataHere = async () => {
+      const pollutionData = await getData(lat, lon, start, endtime);
+      // console.log('this is pollutionData', pollutionData);
+
+      setpm2_5(`${pollutionData[0].components.pm2_5}`);
+      setAqi(`${pollutionData[0].main.aqi}`);
+
+      console.log('state of pm', pm2_5);
+      console.log('state of aqi', aqi);
+
+      const addRow = async () => {
+        const newLocation = await createLocations(
+          lat,
+          lon,
+          aqi,
+          pm2_5,
+          start,
+          endtime
+        );
+
+        console.log('this is the new location added to the table', newLocation);
+        setAllLocations([...allLocations, newLocation]);
+      };
+      addRow();
+    };
+
+    dataHere();
 
     //ADD DATA TO TABLE
-    const newLocation = await createLocations(
-      lat,
-      lon,
-      aqi,
-      pm2_5,
-      start,
-      endtime
-    );
-    console.log('this is the new location added to the table', newLocation);
-    setAllLocations([...allLocations, newLocation]);
+    //its sending this before the state is set with the above info, so need to do above info and then
+    //send this
   };
 
   return (
